@@ -1,7 +1,5 @@
 # SinglCMD - Server Code System
 # Copyright 2025 - Modified from AutoRespond
-# Bug? Feedback? Telegram >> @GalaxyA14user
-
 import datetime
 from babase import Plugin
 from bauiv1 import (
@@ -32,7 +30,13 @@ EXPIRY_DATE = "2026-01-05"
 
 class Add:
     def __init__(s,t):
-        w = SC.cw(
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        w = s.w = SC.cw(
             source=t,
             size=(320,230),
             ps=SC.UIS()*0.8
@@ -126,7 +130,13 @@ class Add:
 
 class LicensePanel:
     def __init__(s, source):
-        # محاسبه روزهای باقی‌مانده
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        s.source = source
         try:
             expiry = datetime.datetime.strptime(EXPIRY_DATE, "%Y-%m-%d").date()
             today = datetime.datetime.now().date()
@@ -136,8 +146,7 @@ class LicensePanel:
                 status_color = (1, 0, 0)
                 progress = 0.0
             else:
-                # محاسبه درصد پیشرفت (فرض می‌کنیم لایسنس 365 روزه است)
-                total_days = 365  # یا می‌توانید از تاریخ شروع هم استفاده کنید
+                total_days = 365  
                 progress = max(0, min(1, (total_days - remaining_days) / total_days))
                 
                 if remaining_days > 30:
@@ -154,19 +163,13 @@ class LicensePanel:
             status = "خطا در محاسبه"
             status_color = (1, 1, 0)
             progress = 0.0
-        
-        # دریافت اکانت فعلی
         current_account = get_account_name_from_game() or "نامشخص"
         is_authorized = current_account == MASTER_ACCOUNT
-        
-        # ساخت ویجت
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=source,
             size=(350, 250),
             ps=SC.UIS()*0.8
         )
-        
-        # عنوان
         tw(
             parent=w,
             text='📋 وضعیت لایسنس',
@@ -175,8 +178,6 @@ class LicensePanel:
             h_align='center',
             color=(0.6, 0.8, 1)
         )
-        
-        # نمایش اکانت مجاز
         tw(
             parent=w,
             text='اکانت مجاز:',
@@ -192,8 +193,6 @@ class LicensePanel:
             color=(0.8, 1, 0.8),
             maxwidth=200
         )
-        
-        # نمایش اکانت فعلی
         tw(
             parent=w,
             text='اکانت فعلی:',
@@ -210,8 +209,6 @@ class LicensePanel:
             color=account_color,
             maxwidth=200
         )
-        
-        # نمایش وضعیت
         status_icon = "✅" if is_authorized else "❌"
         status_text = "مجاز" if is_authorized else "غیرمجاز"
         tw(
@@ -228,8 +225,6 @@ class LicensePanel:
             position=(140, 125),
             color=account_color
         )
-        
-        # نمایش تاریخ انقضا
         tw(
             parent=w,
             text='تاریخ انقضا:',
@@ -245,8 +240,6 @@ class LicensePanel:
             position=(120, 95),
             color=expiry_color
         )
-        
-        # نمایش روزهای باقی‌مانده
         tw(
             parent=w,
             text='روزهای باقی‌مانده:',
@@ -261,8 +254,6 @@ class LicensePanel:
             position=(140, 65),
             color=status_color
         )
-        
-        # نوار پیشرفت
         tw(
             parent=w,
             text='پیشرفت لایسنس:',
@@ -270,16 +261,12 @@ class LicensePanel:
             position=(20, 35),
             color=(0.8, 0.8, 1)
         )
-        
-        # نوار پس‌زمینه
         progress_bg = cw(
             parent=w,
             size=(200, 12),
             position=(140, 30),
             color=(0.2, 0.2, 0.2)
         )
-        
-        # نوار پیشرفت رنگی
         if progress > 0:
             progress_width = int(200 * progress)
             progress_color = (1, 0, 0) if remaining_days < 7 else (1, 0.8, 0) if remaining_days < 30 else (0, 1, 0)
@@ -289,8 +276,6 @@ class LicensePanel:
                 position=(140, 30),
                 color=progress_color
             )
-        
-        # درصد
         percent = int(progress * 100)
         percent_color = (1, 0, 0) if percent > 90 else (1, 0.8, 0) if percent > 70 else (0, 1, 0)
         tw(
@@ -301,8 +286,6 @@ class LicensePanel:
             h_align='right',
             color=percent_color
         )
-        
-        # دکمه بستن
         SC.bw(
             parent=w,
             label='بستن',
@@ -315,19 +298,30 @@ class LicensePanel:
             label='بروزرسانی',
             size=(80, 30),
             position=(180, 5),
-            on_activate_call=CallPartial(s.__init__, source)
+            on_activate_call=CallStrict(s._refresh)
         )
         
         SC.swish()
+    
+    def _refresh(s):
+        if hasattr(s, 'w') and s.w:
+            SC.swish(s.w)
+            teck(0.1, CallStrict(s.__init__, s.source))
 
 class List:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
         cmds = var('cmds') or {}
         if not cmds:
             SC.err('Add some commands first!')
             return
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(420,400),
             ps=SC.UIS()*0.8
@@ -419,12 +413,19 @@ class List:
 
 class Delete:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        s.source = t
         cmds = var('cmds') or {}
         if not cmds:
             SC.err('No commands to delete!')
             return
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(420,400),
             ps=SC.UIS()*0.8
@@ -533,16 +534,24 @@ class Delete:
                 del cmds[inp_key]
                 var('cmds', cmds)
                 SC.ok()
-                s.__init__(None)
+                if hasattr(s, 'w') and s.w:
+                    SC.swish(s.w)
+                    teck(0.1, CallStrict(s.__init__, s.source))
 
 class Edit:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
         cmds = var('cmds') or {}
         if not cmds:
             SC.err('No commands to edit!')
             return
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(470,400),
             ps=SC.UIS()*0.8
@@ -564,8 +573,6 @@ class Edit:
             h_align='center',
             color=(0.8, 1, 0.8)
         )
-        
-        # Headers
         header_container = cw(
             parent=w,
             size=(430,30),
@@ -684,6 +691,12 @@ class Edit:
 
 class PlayerInfo:
     def __init__(s, source):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
         w = s.w = SC.cw(
             source=source,
             size=(600, 350),
@@ -1077,7 +1090,14 @@ class PlayerInfo:
 
 class OwnerSettings:
     def __init__(s,t):
-        w = SC.cw(
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        s.source = t
+        w = s.w = SC.cw(
             source=t,
             size=(350,320),
             ps=SC.UIS()*0.8
@@ -1210,7 +1230,7 @@ class OwnerSettings:
                 var('owner_account', account_name)
                 SC.ok()
                 push(f'Owner account set to: {account_name}', color=(0, 1, 0))
-                s.__init__(None)
+                s._refresh_panel()
             else:
                 SC.err('Could not get account name from game.')
             
@@ -1219,7 +1239,8 @@ class OwnerSettings:
     
     def _detect_from_players(s):
         try:
-            players = PlayerInfo.get_players(None) 
+            temp_player_info = PlayerInfo.__new__(PlayerInfo)
+            players = temp_player_info.get_players()
             owner_account = var('owner_account') or ''
             
             if not owner_account:
@@ -1237,7 +1258,7 @@ class OwnerSettings:
                 var('owner_client_id', found_owner['client_id'])
                 SC.ok()
                 push(f'Owner nickname detected: {found_owner["name"]}', color=(0, 1, 0))
-                s.__init__(None)
+                s._refresh_panel()
             else:
                 SC.err('Owner not found in player list!')
                 
@@ -1259,7 +1280,7 @@ class OwnerSettings:
         var('owner_nickname', sender_name)
         SC.ok()
         push(f'Owner nickname set to: {sender_name}', color=(0, 1, 0))
-        s.__init__(None)
+        s._refresh_panel()
     
     def _set_manual(s):
         manual_name = tw(query=s.manual_input).strip()
@@ -1270,7 +1291,7 @@ class OwnerSettings:
         var('owner_account', manual_name)
         SC.ok()
         push(f'Owner account set to: {manual_name}', color=(0, 1, 0))
-        s.__init__(None)
+        s._refresh_panel()
     
     def _clear_owner(s):
         var('owner_account', '')
@@ -1278,11 +1299,22 @@ class OwnerSettings:
         var('owner_client_id', '')
         SC.ok()
         push('Owner cleared! Plugin will respond to all players.', color=(1, 0.5, 0))
-        s.__init__(None)
+        s._refresh_panel()
+    
+    def _refresh_panel(s):
+        if hasattr(s, 'w') and s.w:
+            SC.swish(s.w)
+            teck(0.1, CallStrict(s.__init__, s.source))
 
 class AntiCodeAdd:
     def __init__(s,t):
-        w = SC.cw(
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        w = s.w = SC.cw(
             source=t,
             size=(400,200),
             ps=SC.UIS()*0.8
@@ -1402,6 +1434,12 @@ class AntiCodeAdd:
 
 class AntiCodeList:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
         anti_cmds = var('anti_cmds') or {}
         if not anti_cmds:
             SC.err('Add some anti codes first!')
@@ -1409,7 +1447,7 @@ class AntiCodeList:
         
         owner_client_id = var('owner_client_id') or 'Not set'
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(450,400),
             ps=SC.UIS()*0.8
@@ -1515,6 +1553,13 @@ class AntiCodeList:
 
 class AntiCodeEdit:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        s.source = t
         anti_cmds = var('anti_cmds') or {}
         if not anti_cmds:
             SC.err('No anti codes to edit!')
@@ -1522,7 +1567,7 @@ class AntiCodeEdit:
         
         owner_client_id = var('owner_client_id') or 'Not set'
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(500,400),
             ps=SC.UIS()*0.8
@@ -1651,15 +1696,25 @@ class AntiCodeEdit:
                 SC.ok()
                 owner_client_id = var('owner_client_id') or ''
                 push(f'Saved: %{inp_key} {owner_client_id} → %{new_out} {owner_client_id} ({delay}s)', color=(0, 1, 0))
+                if hasattr(s, 'w') and s.w:
+                    SC.swish(s.w)
+                    teck(0.1, CallStrict(s.__init__, s.source))
 
 class AntiCodeDelete:
     def __init__(s,t):
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        s.source = t
         anti_cmds = var('anti_cmds') or {}
         if not anti_cmds:
             SC.err('No anti codes to delete!')
             return
         
-        w = SC.cw(
+        w = s.w = SC.cw(
             source=t,
             size=(450,400),
             ps=SC.UIS()*0.8
@@ -1759,11 +1814,19 @@ class AntiCodeDelete:
                 del anti_cmds[inp_key]
                 var('anti_cmds', anti_cmds)
                 SC.ok()
-                s.__init__(None)
+                if hasattr(s, 'w') and s.w:
+                    SC.swish(s.w)
+                    teck(0.1, CallStrict(s.__init__, s.source))
                 
 class AntiCodeMenu:
     def __init__(s, source):
-        w = SC.cw(
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        w = s.w = SC.cw(
             source=source,
             size=(300, 400),
             ps=SC.UIS()*0.8
@@ -1887,7 +1950,13 @@ class SC:
         push('Success!', color=(0,1,0))
     
     def __init__(s, source: bw = None) -> None:
-        w = SC.cw(
+        if hasattr(s, 'w') and s.w:
+            try:
+                SC.swish(s.w)
+            except:
+                pass
+        
+        w = s.w = SC.cw(
             source=source,
             size=(250, 550),
         )
@@ -2034,7 +2103,6 @@ def update_owner_client_id():
         pass
 
 def check_expiry_date():
-    """بررسی تاریخ انقضا"""
     try:
         expiry = datetime.datetime.strptime(EXPIRY_DATE, "%Y-%m-%d").date()
         today = datetime.datetime.now().date()
