@@ -26,7 +26,7 @@ from bascenev1 import (
 )
 
 # ========== تنظیمات مالک اصلی و تاریخ انقضا ==========
-MASTER_ACCOUNT = "khersy" 
+MASTER_ACCOUNT = "Khersy" 
 EXPIRY_DATE = "2026-01-04"  
 # =====================================================
 
