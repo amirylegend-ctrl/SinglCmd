@@ -24,7 +24,7 @@ from bascenev1 import (
 )
 
 # ========== تنظیمات مالک اصلی و تاریخ انقضا ==========
-MASTER_ACCOUNT = "mozmoz" 
+MASTER_ACCOUNT = "Mozmoz" 
 EXPIRY_DATE = "2026-01-06"  
 # =====================================================
 
