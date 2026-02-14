@@ -1,6 +1,5 @@
 # SinglCMD - Server Code System
 # Copyright 2025 - Modified from AutoRespond
-#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
 import datetime
 from babase import Plugin
 from bauiv1 import (
@@ -29,6 +28,7 @@ MASTER_ACCOUNT = "Sosoli"
 EXPIRY_DATE = "2026-03-01"  
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
+
 class Add:
     def __init__(s,t):
         if hasattr(s, 'w') and s.w:
@@ -53,7 +53,7 @@ class Add:
             size=(240,30),
             editable=True,
             v_align='center',
-            color=(0.0,0.0,0.75),
+            color=(0.75,0.75,0.75),
             position=(40,158),
             allow_clear_button=False
         )
@@ -307,7 +307,7 @@ class LicensePanel:
     def _refresh(s):
         if hasattr(s, 'w') and s.w:
             SC.swish(s.w)
-            teck(0.01, CallStrict(s.__init__, s.source))
+            teck(0.1, CallStrict(s.__init__, s.source))
 
 class List:
     def __init__(s,t):
@@ -537,7 +537,7 @@ class Delete:
                 SC.ok()
                 if hasattr(s, 'w') and s.w:
                     SC.swish(s.w)
-                    teck(0.01, CallStrict(s.__init__, s.source))
+                    teck(0.1, CallStrict(s.__init__, s.source))
 
 class Edit:
     def __init__(s,t):
@@ -1055,7 +1055,7 @@ class PlayerInfo:
             disconnect_client(player['client_id'])
             push(f"🚫 {player['name']} kicked", color=(1, 0.5, 0))
             gs('dingSmallLow').play()
-            teck(0.01, CallStrict(s.refresh_players))
+            teck(1.0, CallStrict(s.refresh_players))
         except Exception as e:
             SC.err(f"Error: {e}")
 
@@ -1909,7 +1909,7 @@ class SC:
         if 'button_type' not in kwargs:
             kwargs['button_type'] = 'square'
         if 'color' not in kwargs:
-            kwargs['color'] = (0.4, 0.2, 0.2)#this b
+            kwargs['color'] = (0.18,0.18,0.18)
         
         return bw(**kwargs)
     
@@ -1928,7 +1928,7 @@ class SC:
             scale_origin_stack_offset=o,
             scale=c.UIS()+ps,
             transition='in_scale',
-            color=(0,0,0),#this p
+            color=(0.18,0.18,0.18),
             **filtered_kwargs
         )
         cw(r, on_outside_click_call=CallPartial(SC.swish, t=r))
@@ -1976,23 +1976,13 @@ class SC:
             top_border=10,
             bottom_border=10
         )
-
         tw(
-            scale=1.2,
+            scale=1.5,
             parent=w,
-            text='For',
+            text='SinglCMD',
             h_align='center',
-            position=(0, 570),
-            color=(1,0,0)
-            )
-            
-        tw(
-            scale=1.2,
-            parent=w,
-            text='My Best Friend',
-            h_align='center',
-            position=(100, 540),
-            color=(0.6,0.8,0.8)
+            position=(105, 530),
+            color=(0.6,0.8,1)
         )
         owner_account = var('owner_account')
         owner_nickname = var('owner_nickname') or owner_account
@@ -2248,7 +2238,7 @@ class SinglCMD(Plugin):
             return  
         
         z = GCM()
-        teck(0.001, CallStrict(s.ear))
+        teck(0.3, CallStrict(s.ear))
         if z == s.z: return
         s.z = z
         
