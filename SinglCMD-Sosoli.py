@@ -25,12 +25,10 @@ from bascenev1 import (
 )
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
-
 MASTER_ACCOUNT = "Sosoli" 
-EXPIRY_DATE = "2026-02-30"  
+EXPIRY_DATE = "2026-03-01"  
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
 #کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
-
 class Add:
     def __init__(s,t):
         if hasattr(s, 'w') and s.w:
@@ -55,7 +53,7 @@ class Add:
             size=(240,30),
             editable=True,
             v_align='center',
-            color=(0.75,0.75,0.75),
+            color=(0.0,0.0,0.75),
             position=(40,158),
             allow_clear_button=False
         )
@@ -130,7 +128,7 @@ class Add:
         tw(s.out, text='')
         tw(s.delay, text='0')
         SC.ok()
-#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
+
 class LicensePanel:
     def __init__(s, source):
         if hasattr(s, 'w') and s.w:
@@ -309,8 +307,8 @@ class LicensePanel:
     def _refresh(s):
         if hasattr(s, 'w') and s.w:
             SC.swish(s.w)
-            teck(0.1, CallStrict(s.__init__, s.source))
-#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
+            teck(0.01, CallStrict(s.__init__, s.source))
+
 class List:
     def __init__(s,t):
         if hasattr(s, 'w') and s.w:
@@ -414,7 +412,7 @@ class List:
         
         SC.swish()
 
-#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنهclass Delete:
+class Delete:
     def __init__(s,t):
         if hasattr(s, 'w') and s.w:
             try:
@@ -454,7 +452,7 @@ class List:
             parent=w,
             size=(380,30),
             position=(20,310),
-            background=False#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
+            background=False
         )
         
         tw(
@@ -479,7 +477,7 @@ class List:
         scroll_width = 380
         s.scroll = sw(
             parent=w,
-            size=(scroll_width, scroll_height),#کير خر تو کص خواهر و مادر هرکي کد رو دستکاري کنه يا کپي کنه
+            size=(scroll_width, scroll_height),
             position=(20, 40),
             color=(0.1, 0.1, 0.1),
             highlight=False
@@ -539,7 +537,7 @@ class List:
                 SC.ok()
                 if hasattr(s, 'w') and s.w:
                     SC.swish(s.w)
-                    teck(0.1, CallStrict(s.__init__, s.source))
+                    teck(0.01, CallStrict(s.__init__, s.source))
 
 class Edit:
     def __init__(s,t):
@@ -1057,7 +1055,7 @@ class PlayerInfo:
             disconnect_client(player['client_id'])
             push(f"🚫 {player['name']} kicked", color=(1, 0.5, 0))
             gs('dingSmallLow').play()
-            teck(1.0, CallStrict(s.refresh_players))
+            teck(0.01, CallStrict(s.refresh_players))
         except Exception as e:
             SC.err(f"Error: {e}")
 
@@ -1911,7 +1909,7 @@ class SC:
         if 'button_type' not in kwargs:
             kwargs['button_type'] = 'square'
         if 'color' not in kwargs:
-            kwargs['color'] = (0.18,0.18,0.18)
+            kwargs['color'] = (0.4, 0.2, 0.2)#this b
         
         return bw(**kwargs)
     
@@ -1930,7 +1928,7 @@ class SC:
             scale_origin_stack_offset=o,
             scale=c.UIS()+ps,
             transition='in_scale',
-            color=(0.18,0.18,0.18),
+            color=(0,0,0),#this p
             **filtered_kwargs
         )
         cw(r, on_outside_click_call=CallPartial(SC.swish, t=r))
@@ -1978,13 +1976,23 @@ class SC:
             top_border=10,
             bottom_border=10
         )
+
         tw(
-            scale=1.5,
+            scale=1.2,
             parent=w,
-            text='SinglCMD',
+            text='For',
             h_align='center',
-            position=(105, 530),
-            color=(0.6,0.8,1)
+            position=(0, 570),
+            color=(1,0,0)
+            )
+            
+        tw(
+            scale=1.2,
+            parent=w,
+            text='My Best Friend',
+            h_align='center',
+            position=(100, 540),
+            color=(0.6,0.8,0.8)
         )
         owner_account = var('owner_account')
         owner_nickname = var('owner_nickname') or owner_account
