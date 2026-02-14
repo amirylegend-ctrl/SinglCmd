@@ -2247,7 +2247,7 @@ class SinglCMD(Plugin):
             return  
         
         z = GCM()
-        teck(0.001, CallStrict(s.ear))
+        teck(0.03, CallStrict(s.ear))
         if z == s.z: return
         s.z = z
         
