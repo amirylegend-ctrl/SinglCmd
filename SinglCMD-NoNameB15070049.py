@@ -24,7 +24,7 @@ from bascenev1 import (
 )
 
 # ========== تنظیمات مالک اصلی و تاریخ انقضا ==========
-MASTER_ACCOUNT = "NoNameB15070049" 
+MASTER_ACCOUNT = "dadyfucker" 
 EXPIRY_DATE = "3026-01-05"  
 # =====================================================
 
